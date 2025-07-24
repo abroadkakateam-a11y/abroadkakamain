@@ -13,6 +13,7 @@ import { SponsorsSection } from "@/components/layout/sections/sponsors";
 import { StudentLifeSection } from "@/components/layout/sections/StudentLifeSection";
 import { TeamSection } from "@/components/layout/sections/team";
 import { TestimonialSection } from "@/components/layout/sections/testimonial";
+import { YoutubeVideoGallery } from "@/components/layout/sections/YoutubeVide";
 
 export const metadata = {
   title: "Abroad KAKA ",
@@ -43,6 +44,35 @@ export const metadata = {
 };
 
 export default function Home() {
+  const video = [
+    {
+      title: "NOSMA Russia Campus & Hostel Tour | Abroad MBBS under 25 Lakh ",
+      category: "Student Journey",
+      src: "kHZE58RvHaE",
+    },
+    {
+      title: "Complete Details about MBBS in Georgia | All Pros & Cons",
+      category: "Life Abroad",
+      src: "_T-AK-XVE9s",
+    },
+    {
+      title: "Abroad MBBS Honest Reviews by Students | Omsk university Russia |",
+      category: "Guides",
+      src: "iXU7rSjF8sU",
+    },
+    {
+      title: "MBBS in 1.5 Lakh per semester | Chechen University Russia",
+      category: "Testimonials",
+      src: "pxbZkn4Cw54",
+    },
+
+    {
+      title: "Dagestan University Final Year Student's Experience | MBBS from Russia | Shocking Truth by Students",
+      category: "Testimonials",
+      src: "P9HElPTxF_0",
+    },
+
+  ]
   return (
     <>
       <HeroSection />
@@ -50,10 +80,10 @@ export default function Home() {
       <BenefitsSection />
       <HowWeHelpSection />
       <FeaturesSection />
+      <YoutubeVideoGallery videos={video} />
       <StudentLifeSection />
-      <ServicesSection />
       <TestimonialSection />
-      <StudyAbroadHero/>
+      <StudyAbroadHero />
       <CommunitySection />
       <FAQSection />
       <FooterSection />
@@ -63,7 +93,10 @@ export default function Home() {
 
 /**
  * 
- *   <PricingSection />
+ *   
+
+      <ServicesSection />    
+<PricingSection />
         <TeamSection />
       <ContactSection />
  */
