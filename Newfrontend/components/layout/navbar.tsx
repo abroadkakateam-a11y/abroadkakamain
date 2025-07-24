@@ -35,8 +35,8 @@ interface FeatureProps {
 
 const routeList: RouteProps[] = [
   {
-    href: "#testimonials",
-    label: "Testimonials",
+    href: "/University",
+    label: "University",
   },
   {
     href: "#features",
@@ -148,14 +148,7 @@ export const Navbar = () => {
               Why Abroad Kaka?
             </NavigationMenuTrigger>
             <NavigationMenuContent>
-              <div className="grid w-[600px] grid-cols-2 gap-5 p-4">
-                <Image
-                  src="https://res.cloudinary.com/dt3j2uiyb/image/upload/v1753268725/transparent_1_zwcqee.png"
-                  alt="Students"
-                  className="h-full w-full rounded-md object-cover"
-                  width={600}
-                  height={600}
-                />
+              <div className="grid w-[300px]  gap-5 p-4">
                 <ul className="flex flex-col gap-2">
                   {featureList.map(({ title, description }) => (
                     <li
