@@ -70,10 +70,7 @@ export default function HowWeHelpSection() {
     return (
         <div className="min-h-screen  relative overflow-hidden py-14">
             {/* Decorative elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute top-0 left-0 w-64 h-64 bg-[#00A3D3]/10 rounded-full filter blur-3xl"></div>
-                <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#03113D]/20 rounded-full filter blur-3xl"></div>
-            </div>
+           
 
             <div className="container  mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
                 <div className="bg-gradient-to-br from-[#00A3D3] via-[#00A3D3] to-[#03113D] backdrop-blur-lg rounded-3xl border border-white/10 p-8 md:p-12 lg:p-16 shadow-2xl">
