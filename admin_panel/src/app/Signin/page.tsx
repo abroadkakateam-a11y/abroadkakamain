@@ -1,27 +1,33 @@
 "use client";
-import { BACKEND_URL } from "@/config/config";
+import { BACKEND_URL, FRONTEND_APi } from "@/config/config";
 import { setUser } from "@/store/slices/userSlice";
+import { UserState } from "@/types/userstate";
 import axios from "axios";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 export default function SignInPage() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const user = useSelector((state: { user: UserState }) => state.user);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
-
   const [error, setError] = useState("");
-  const dispatch = useDispatch();
+
+  if (user.isAuthenticated) {
+    router.push("/");
+  }
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    // Clear error when user starts typing
     if (error) setError("");
   };
 
@@ -39,8 +45,10 @@ export default function SignInPage() {
       const resp = await axios.post(`${BACKEND_URL}/api/auth/login`, {
         email: formData.email,
         password: formData.password,
+        api: FRONTEND_APi,
       });
-      console.log(resp);
+
+      localStorage.setItem("refreshToken", resp.data.data.refreshToken);
       dispatch(
         setUser({
           user: resp.data.data.user,
@@ -48,6 +56,7 @@ export default function SignInPage() {
         })
       );
       toast.success("Sign in successful!");
+      router.push("/");
     } catch (error) {
       console.log(error);
     }

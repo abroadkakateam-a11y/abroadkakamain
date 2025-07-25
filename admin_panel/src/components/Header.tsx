@@ -1,5 +1,5 @@
 "use client";
-import { Menu } from "lucide-react";
+import { LogOutIcon, Menu } from "lucide-react";
 import React from "react";
 import {
   Sheet,
@@ -12,15 +12,16 @@ import {
 import { Separator } from "./ui/separator";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from "./ui/navigation-menu";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, setUser } from "@/store/slices/userSlice";
+import { UserState } from "@/types/userstate";
 
 interface RouteProps {
   href: string;
@@ -49,7 +50,13 @@ const routeList: RouteProps[] = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-
+  const user = useSelector((state: { user: UserState }) => state.user);
+  const dispatch = useDispatch();
+  function handleLogout() {
+    dispatch(logout());
+    localStorage.removeItem("refreshToken");
+    setIsOpen(false);
+  }
   return (
     <header className="shadow-inner bg-opacity-15 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
       <Link href="/" className="font-bold text-lg flex items-center">
@@ -109,6 +116,15 @@ export const Navbar = () => {
                     <Link href={href}>{label}</Link>
                   </Button>
                 ))}
+                {user.isAuthenticated && (
+                  <Button
+                    onClick={handleLogout}
+                    className="flex text-red-600 text-md focus:outline-0 outline-0 justify-start text-base "
+                    variant={"ghost"}
+                  >
+                    Logout <LogOutIcon />
+                  </Button>
+                )}
               </div>
             </div>
 
@@ -122,8 +138,6 @@ export const Navbar = () => {
       {/* Desktop Nav */}
       <NavigationMenu className="hidden lg:block mx-auto">
         <NavigationMenuList>
-          <NavigationMenuItem></NavigationMenuItem>
-
           {routeList.map(({ href, label }) => (
             <NavigationMenuItem key={href}>
               <NavigationMenuLink asChild>
@@ -133,9 +147,18 @@ export const Navbar = () => {
               </NavigationMenuLink>
             </NavigationMenuItem>
           ))}
+          <NavigationMenuItem></NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-
+      {user.isAuthenticated && (
+        <Button
+          onClick={handleLogout}
+          className="hidden lg:flex text-red-600 text-md"
+          variant={"ghost"}
+        >
+          Logout <LogOutIcon />
+        </Button>
+      )}
       {/* Right-side (desktop) */}
       <div className="hidden lg:flex gap-1 items-center"></div>
     </header>

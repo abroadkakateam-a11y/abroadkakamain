@@ -1,30 +1,36 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import authRoutes from './routes/auth.routes';
-import { authenticate } from './middleware/auth.middleware';
-import { errorHandler } from './middleware/errorHandler.middleware';
-import { connectDB } from './config/db';
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import authRoutes from "./routes/auth.routes";
+import { authenticate } from "./middleware/auth.middleware";
+import { errorHandler } from "./middleware/errorHandler.middleware";
+import { connectDB } from "./config/db";
+import { apiCheck } from "./middleware/api.middleware";
 
 export async function createApp() {
-    await connectDB();
-    const app = express();
+  await connectDB();
+  const app = express();
 
-    app.use(cors());
-    app.use(morgan('dev'));
-    app.use(express.json());
+  app.use(cors());
+  app.use(morgan("dev"));
+  app.use(express.json());
 
-    // Public routes
-    app.use('/api/auth', authRoutes);
+  // Public routes
+  app.use("/api/auth", apiCheck(), authRoutes);
 
-    // Example protected route
-    app.get('/api/protected', authenticate(['student', 'admin']), (req, res) => {
-        res.json({ message: 'You have access' });
-        // No return statement needed; just send the response
-    });
+  // Example protected route
+  app.get(
+    "/api/protected",
+    apiCheck(),
+    authenticate(["student", "admin"]),
+    (req, res) => {
+      res.json({ message: "You have access" });
+      // No return statement needed; just send the response
+    }
+  );
 
-    // Error handler (last middleware)
-    app.use(errorHandler);
+  // Error handler (last middleware)
+  app.use(errorHandler);
 
-    return app;
+  return app;
 }

@@ -6,6 +6,7 @@ import { setUser } from "@/store/slices/userSlice";
 import axios from "axios";
 import { Navbar } from "@/components/Header";
 import { UserState } from "@/types/userstate";
+import { BACKEND_URL } from "@/config/config";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const path = usePathname();
@@ -17,7 +18,6 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   useEffect(() => {
     const refreshToken = async () => {
       const token = localStorage.getItem("refreshToken");
-
       if (!token) {
         setIsLoading(false);
         return;
@@ -25,8 +25,13 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
       try {
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}Auth/refresh`,
-          { refreshToken: token }
+          `${BACKEND_URL}/api/auth/refresh`,
+          {
+            refreshToken: token,
+          },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
         );
         localStorage.setItem("refreshToken", response.data.data.refreshToken);
         dispatch(
@@ -45,11 +50,10 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
     refreshToken();
   }, [dispatch]);
-  /*
+
   if (!user.isAuthenticated) {
     router.push("/Signin");
   }
-    */
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar />
