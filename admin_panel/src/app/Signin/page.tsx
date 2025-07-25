@@ -42,11 +42,18 @@ export default function SignInPage() {
       return;
     }
     try {
-      const resp = await axios.post(`${BACKEND_URL}/api/auth/login`, {
-        email: formData.email,
-        password: formData.password,
-        api: FRONTEND_APi,
-      });
+      const resp = await axios.post(
+        `${BACKEND_URL}/api/auth/login`,
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+        {
+          headers: {
+            "api-key": FRONTEND_APi,
+          },
+        }
+      );
 
       localStorage.setItem("refreshToken", resp.data.data.refreshToken);
       dispatch(
