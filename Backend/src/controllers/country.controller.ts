@@ -4,6 +4,7 @@ import { CountryCreateInput, CountryUpdateInput } from '../types/country.types';
 import { uploadSingleImage } from '../config/multer';
 import { uploadToCloudinary, deleteFromCloudinary } from '../config/cloudinary';
 import { AppError } from '../utils/appError';
+import { countryCreateSchema, countryUpdateSchema } from "../validators/country.validator";
 
 const countryService = new CountryService();
 
@@ -34,7 +35,7 @@ export const getCountry = async (req: Request, res: Response, next: NextFunction
 
 export const createCountry = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const countryData: CountryCreateInput = req.body;
+        let countryData = req.body;
 
         if (req.file) {
             const result = await uploadToCloudinary(req.file, 'countries/flags') as { public_id: string; secure_url: string };
@@ -44,7 +45,9 @@ export const createCountry = async (req: Request, res: Response, next: NextFunct
             };
         }
 
-        const newCountry = await countryService.createCountry(countryData);
+        const parsedData = countryCreateSchema.parse(countryData);
+
+        const newCountry = await countryService.createCountry(parsedData);
         res.status(201).json({
             status: 'success',
             data: { country: newCountry }

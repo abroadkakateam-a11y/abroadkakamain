@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import authRoutes from "./routes/auth.routes";
+import countryRoutes from "./routes/country.routes";
 import { authenticate } from "./middleware/auth.middleware";
 import errorHandler from "./middleware/errorHandler.middleware";
 import { connectDB } from "./config/db";
@@ -25,7 +26,7 @@ export async function createApp() {
 
   // Public routes
   app.use("/api/auth", apiCheck(), authRoutes);
-
+  app.use("/api/country", apiCheck(), countryRoutes)
   // Protected test route
   app.get(
     "/api/protected",
@@ -43,7 +44,7 @@ export async function createApp() {
 
   const typedErrorHandler: ErrorHandler = errorHandler;
 
-  app.use((err: Error, req: Request, res: Response, next: NextFunction) => 
+  app.use((err: Error, req: Request, res: Response, next: NextFunction) =>
     typedErrorHandler(err, req, res, next)
   );
 
