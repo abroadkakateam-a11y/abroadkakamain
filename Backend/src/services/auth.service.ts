@@ -15,11 +15,11 @@ interface Payload {
 }
 export const authService = {
   register: async (input: unknown) => {
-    const { name, email, password } = registerSchema.parse(input);
+    const { name, email, password, role } = registerSchema.parse(input);
     const existing = await userRepository.findByEmail(email);
     if (existing) throw new Error("Email already in use");
     const hashed = bcrypt.hashSync(password, 8);
-    const user = await userRepository.create({ name, email, password: hashed });
+    const user = await userRepository.create({ name, email, password: hashed, role });
 
     await user.save();
     return {
@@ -58,7 +58,11 @@ export const authService = {
   refresh: async (input: unknown) => {
     const { refreshToken } = refreshTokenBody.parse(input);
 
-    const payload: Payload = jwt.verify(refreshToken, config.refreshSecret);
+    const decoded = jwt.verify(refreshToken, config.refreshSecret);
+    if (typeof decoded !== "object" || decoded === null || !("id" in decoded) || !("role" in decoded)) {
+      throw new Error("Invalid token payload");
+    }
+    const payload = decoded as Payload;
     const user = await userRepository.findById(payload.id);
     console.log(user);
     if (!user || user.refreshToken != refreshToken) {
