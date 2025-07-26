@@ -39,16 +39,16 @@ const routeList: RouteProps[] = [
     label: "University",
   },
   {
-    href: "#features",
-    label: "Features",
+    href: "/success-stories",
+    label: "Success Stories",
   },
   {
-    href: "#services",
-    label: "Services",
+    href: "/about-us",
+    label: "About US",
   },
   {
-    href: "#faq",
-    label: "FAQ",
+    href: "/universities ",
+    label: "Universities ",
   },
 ];
 

@@ -118,21 +118,21 @@ export const HeroSection = () => {
         <div className="absolute inset-y-0 right-0 h-full w-px bg-gradient-to-b from-transparent via-neutral-300 to-transparent dark:via-neutral-700">
           <div className="absolute h-40 w-px bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
         </div>
-       
+
 
 
 
         {/* Main heading */}
         <div className="px-4 py-10 md:py-10">
           {/* Live badge */}
-        <div className="flex justify-center">
-          <Badge variant="outline" className="text-sm py-6 h-3 mb-8">
-            <span className="mr-2 text-primary">
-              <Badge className="bg-[#00A3D3] text-white hover:bg-[#00A3D3]/80">Live</Badge>
-            </span>
-            <span>New Admissions Open!</span>
-          </Badge>
-        </div>
+          <div className="flex justify-center">
+            <Badge variant="outline" className="text-sm py-6 h-3 mb-8">
+              <span className="mr-2 text-primary">
+                <Badge className="bg-[#00A3D3] text-white hover:bg-[#00A3D3]/80">Live</Badge>
+              </span>
+              <span>New Admissions Open!</span>
+            </Badge>
+          </div>
           <h1 className="relative z-10 mx-auto max-w-4xl text-center text-4xl font-bold text-slate-700 md:text-5xl lg:text-7xl dark:text-slate-300">
             {"Welcome to "
               .split(" ")
