@@ -1,29 +1,62 @@
 import { v2 as cloudinary } from 'cloudinary';
-import dotenv from 'dotenv';
+import { Readable } from 'stream';
 
-dotenv.config();
-
+// Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUD_API_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
-  secure: true
 });
 
-export const uploadToCloudinary = async (file: Express.Multer.File, folder: string) => {
+// Upload image to Cloudinary
+export const uploadToCloudinary = (
+  file: Express.Multer.File,
+  folder: string = 'uploads'
+): Promise<{ public_id: string; secure_url: string }> => {
   return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload_stream(
-      { folder, resource_type: 'auto' },
+    const uploadStream = cloudinary.uploader.upload_stream(
+      {
+        folder,
+        resource_type: 'image',
+        transformation: [
+          { width: 1200, height: 800, crop: 'limit' },
+          { quality: 'auto' },
+          { fetch_format: 'auto' }
+        ]
+      },
       (error, result) => {
-        if (error) return reject(error);
-        resolve(result);
+        if (error) {
+          reject(error);
+        } else if (result) {
+          resolve({
+            public_id: result.public_id,
+            secure_url: result.secure_url
+          });
+        } else {
+          reject(new Error('Upload failed'));
+        }
       }
-    ).end(file.buffer);
+    );
+
+    // Convert buffer to stream and pipe to Cloudinary
+    const bufferStream = new Readable();
+    bufferStream.push(file.buffer);
+    bufferStream.push(null);
+    bufferStream.pipe(uploadStream);
   });
 };
 
-export const deleteFromCloudinary = async (publicId: string) => {
-  return cloudinary.uploader.destroy(publicId);
+// Delete image from Cloudinary
+export const deleteFromCloudinary = (publicId: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.destroy(publicId, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
 };
 
 export default cloudinary;
