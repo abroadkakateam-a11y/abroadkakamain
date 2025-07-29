@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { config } from "../config";
 import { sendError } from "../utils/response.util";
-import { UserModel } from "../models/user.model"; // Import your User model
 
 interface JwtPayload {
   id: string;
@@ -21,8 +20,10 @@ export function authenticate(roles: string[] = []) {
       return;
     }
     const token = header.split(" ")[1];
+
     try {
       const payload = jwt.verify(token, config.jwtSecret) as JwtPayload;
+      console.log("payload: " + payload);
       if (roles.length && !roles.includes(payload.role)) {
         sendError(res, "Forbidden", "Forbidden", 403);
         return;

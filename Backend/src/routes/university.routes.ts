@@ -222,7 +222,7 @@ router.get("/:id", getUniversityById);
  */
 router.post(
   "/",
-  authenticate(['admin']), // Only admin can create countries,
+  authenticate(["admin"]), // Only admin can create countries,
   uploadUniversityImages,
   validateUniversity(createUniversitySchema),
   createUniversity
