@@ -29,14 +29,11 @@ export async function createApp() {
   app.use(apiCheck());
 
   // Public routes
-<<<<<<< HEAD
-  app.use("/api/auth", authRoutes);
-  app.use("/api/country", countryRoutes);
-=======
+
   app.use("/api/auth", apiCheck(), authRoutes);
   app.use("/api/country", apiCheck(), countryRoutes);
   app.use("/api/universities", apiCheck(), universityRoutes); // ✅ This is correct
->>>>>>> origin/main
+
   // Protected test route
   app.get(
     "/api/protected",

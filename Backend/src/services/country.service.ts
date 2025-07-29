@@ -17,22 +17,12 @@ class CountryService {
   }
 
   public async getCountry(id: string) {
-    const country = await Country.findById(id).populate({
-      path: "universities",
-      select: "name city logo type worldRanking",
-    });
+    const country = await Country.findById(id);
 
     if (!country) {
       throw new AppError("No country found with that ID", 404);
     }
-
-<<<<<<< HEAD
-    return country;
   }
-=======
-    public async getCountry(id: string) {
-        const country = await Country.findById(id)
->>>>>>> origin/main
 
   public async createCountry(countryData: CountryCreateInput) {
     const newCountry = await Country.create(countryData);
