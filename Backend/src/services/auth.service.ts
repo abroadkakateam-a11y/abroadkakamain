@@ -88,7 +88,7 @@ export const authService = {
 
     const newAccessToken = jwt.sign(
       { id: user._id, role: user.role },
-      config.refreshSecret,
+      config.jwtSecret,
       { expiresIn: "1h" }
     );
 

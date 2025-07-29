@@ -30,9 +30,9 @@ export async function createApp() {
 
   // Public routes
 
-  app.use("/api/auth", apiCheck(), authRoutes);
-  app.use("/api/country", apiCheck(), countryRoutes);
-  app.use("/api/universities", apiCheck(), universityRoutes); // ✅ This is correct
+  app.use("/api/auth", authRoutes);
+  app.use("/api/country", countryRoutes);
+  app.use("/api/universities", universityRoutes);
 
   // Protected test route
   app.get(
