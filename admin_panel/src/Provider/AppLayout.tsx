@@ -6,7 +6,7 @@ import { setUser } from "@/store/slices/userSlice";
 import axios from "axios";
 import { Navbar } from "@/components/Header";
 import { UserState } from "@/types/userstate";
-import { BACKEND_URL } from "@/config/config";
+import { BACKEND_URL, FRONTEND_API } from "@/config/config";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const path = usePathname();
@@ -30,7 +30,10 @@ export default function AppLayout({ children }: { children: ReactNode }) {
             refreshToken: token,
           },
           {
-            headers: { "Content-Type": "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              "api-key": FRONTEND_API,
+            },
           }
         );
         localStorage.setItem("refreshToken", response.data.data.refreshToken);
@@ -51,11 +54,8 @@ export default function AppLayout({ children }: { children: ReactNode }) {
     refreshToken();
   }, [dispatch]);
 
-  if (!user.isAuthenticated) {
-    router.push("/Signin");
-  }
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-white flex flex-col gap-2">
       <Navbar />
       <main>{children}</main>
     </div>

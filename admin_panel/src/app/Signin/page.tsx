@@ -1,10 +1,10 @@
 "use client";
-import { BACKEND_URL, FRONTEND_APi } from "@/config/config";
+import { BACKEND_URL, FRONTEND_API } from "@/config/config";
 import { setUser } from "@/store/slices/userSlice";
 import { UserState } from "@/types/userstate";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
@@ -22,7 +22,7 @@ export default function SignInPage() {
   if (user.isAuthenticated) {
     router.push("/");
   }
-  const handleChange = (e) => {
+  const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -50,7 +50,7 @@ export default function SignInPage() {
         },
         {
           headers: {
-            "api-key": FRONTEND_APi,
+            "api-key": FRONTEND_API,
           },
         }
       );
