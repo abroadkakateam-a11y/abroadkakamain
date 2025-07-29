@@ -26,8 +26,13 @@ class CountryService {
       throw new AppError("No country found with that ID", 404);
     }
 
+<<<<<<< HEAD
     return country;
   }
+=======
+    public async getCountry(id: string) {
+        const country = await Country.findById(id)
+>>>>>>> origin/main
 
   public async createCountry(countryData: CountryCreateInput) {
     const newCountry = await Country.create(countryData);
