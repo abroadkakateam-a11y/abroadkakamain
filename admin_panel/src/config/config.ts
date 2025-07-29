@@ -1,2 +1,2 @@
 export const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-export const FRONTEND_APi = process.env.NEXT_PUBLIC_FRONTEND_API;
+export const FRONTEND_API = process.env.NEXT_PUBLIC_FRONTEND_API;

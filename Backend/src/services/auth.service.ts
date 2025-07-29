@@ -19,7 +19,12 @@ export const authService = {
     const existing = await userRepository.findByEmail(email);
     if (existing) throw new Error("Email already in use");
     const hashed = bcrypt.hashSync(password, 8);
-    const user = await userRepository.create({ name, email, password: hashed, role });
+    const user = await userRepository.create({
+      name,
+      email,
+      password: hashed,
+      role,
+    });
 
     await user.save();
     return {
@@ -59,12 +64,16 @@ export const authService = {
     const { refreshToken } = refreshTokenBody.parse(input);
 
     const decoded = jwt.verify(refreshToken, config.refreshSecret);
-    if (typeof decoded !== "object" || decoded === null || !("id" in decoded) || !("role" in decoded)) {
+    if (
+      typeof decoded !== "object" ||
+      decoded === null ||
+      !("id" in decoded) ||
+      !("role" in decoded)
+    ) {
       throw new Error("Invalid token payload");
     }
     const payload = decoded as Payload;
     const user = await userRepository.findById(payload.id);
-    console.log(user);
     if (!user || user.refreshToken != refreshToken) {
       throw new Error("Token not found ");
     }

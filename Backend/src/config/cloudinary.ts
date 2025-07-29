@@ -1,11 +1,34 @@
+<<<<<<< HEAD
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+
+dotenv.config();
+=======
 import { v2 as cloudinary } from 'cloudinary';
 import { Readable } from 'stream';
+>>>>>>> origin/main
 
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUD_API_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_API_SECRET,
+<<<<<<< HEAD
+  secure: true,
+});
+
+export const uploadToCloudinary = async (
+  file: Express.Multer.File,
+  folder: string
+) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream({ folder, resource_type: "auto" }, (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      })
+      .end(file.buffer);
+=======
 });
 
 // Upload image to Cloudinary
@@ -43,6 +66,7 @@ export const uploadToCloudinary = (
     bufferStream.push(file.buffer);
     bufferStream.push(null);
     bufferStream.pipe(uploadStream);
+>>>>>>> origin/main
   });
 };
 
