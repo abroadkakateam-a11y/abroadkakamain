@@ -25,21 +25,24 @@ interface UniversityFiles {
     coverImage?: Express.Multer.File[];
     reviewImages?: Express.Multer.File[];
 }
-
 interface QueryParams {
-    page: number;
-    limit: number;
+    page?: number;
+    limit?: number;
     country?: string;
     program?: string;
     search?: string;
     sort?: string;
 }
-
-const buildFilter = (query: QueryParams) => {
+const buildFilter = (query: Partial<QueryParams>) => {
     const filter: any = {};
 
-    if (query.country) {
-        filter.country = new mongoose.Types.ObjectId(query.country);
+    // Handle country filter - skip if "all"
+    if (query.country && query.country !== 'all') {
+        try {
+            filter.country = new mongoose.Types.ObjectId(query.country);
+        } catch (error) {
+            throw new AppError('Invalid country ID format', 400);
+        }
     }
 
     if (query.program) {
@@ -56,7 +59,6 @@ const buildFilter = (query: QueryParams) => {
 
     return filter;
 };
-
 // Fixed helper function to build sort options
 const buildSort = (sortQuery?: string): Record<string, SortOrder> => {
     if (!sortQuery) return { createdAt: -1 }; // Default sort by newest first
@@ -95,24 +97,31 @@ const handleImageUploads = async (files: UniversityFiles, existingImages?: any) 
 
     return imageUpdates;
 };
-
 export const getUniversities = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // Query is already validated by middleware, so we can use it directly
-        const { page, limit, ...query } = req.query as unknown as QueryParams;
+        // Set default values for pagination
+        const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 10;
 
-        const filter = buildFilter({ page, limit, ...query });
-        const sort = buildSort(query.sort);
+        // Destructure query parameters
+        const { sort, ...filterQuery } = req.query;
+
+        // Build filter using your existing buildFilter function
+        // This will handle country, search, and program filters
+        const finalFilter = buildFilter(filterQuery);
+
+        // Build sort object
+        const sortObject = buildSort(sort as string | undefined);
 
         // Get universities with pagination
-        const universities = await University.find(filter)
-            .sort(sort)
+        const universities = await University.find(finalFilter)
+            .sort(sortObject)
             .skip((page - 1) * limit)
             .limit(limit)
             .populate("country", "name code");
 
         // Get total count for pagination
-        const total = await University.countDocuments(filter);
+        const total = await University.countDocuments(finalFilter);
 
         res.status(200).json({
             status: 'success',
@@ -131,7 +140,6 @@ export const getUniversities = async (req: Request, res: Response, next: NextFun
         next(error);
     }
 };
-
 export const getUniversityById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Validate ObjectId format
