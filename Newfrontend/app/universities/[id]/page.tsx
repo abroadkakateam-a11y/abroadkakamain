@@ -49,13 +49,7 @@ interface UniversityData {
   highlights: Array<{ icon?: string; label: string; value: string }>;
   about: string;
   programs: string[];
-  duration?: string;
-  medium?: string;
-  gpaRequired?: string;
-  feesUSD?: string;
-  feesINR?: string;
   feeStructure: Array<{ year: number; tuition: number; hostel: number }>;
-  hostelCost?: string;
   approvedBy: string[];
   facilities: string[];
   eligibility: string[];
@@ -168,12 +162,7 @@ export default function UniversityPage() {
             comparison: apiData.comparison,
             feeStructure: apiData.feeStructure,
             // Add defaults for fields that might be missing
-            duration: apiData.duration,
-            medium: apiData.medium,
-            gpaRequired: apiData.gpaRequired,
-            feesUSD: apiData.feesUSD,
-            feesINR: apiData.feesINR,
-            hostelCost: apiData.hostelCost
+
           };
           setUniversityData(mappedData);
         } else {
@@ -220,7 +209,7 @@ export default function UniversityPage() {
       initial="hidden"
       animate="visible"
       variants={stagger}
-      className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-4 sm:py-6 lg:py-8"
+      className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-6 sm:py-6 lg:py-8"
     >
       {/* Hero Section */}
       <motion.section variants={fadeIn}>
@@ -273,13 +262,6 @@ export default function UniversityPage() {
                     className="bg-[#00A3D3] hover:bg-[#0087b3] text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5"
                   >
                     Apply Now
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="text-white border-white bg-white/5 hover:bg-white/10 text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5"
-                  >
-                    Download Brochure
                   </Button>
                 </motion.div>
               </div>
@@ -353,14 +335,6 @@ export default function UniversityPage() {
                     </h4>
                     <ul className="space-y-2 text-muted-foreground text-sm sm:text-base">
                       <li className="flex items-center gap-2">
-                        <Clock className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                        <span>Duration: {universityData.duration}</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                        <span>Medium: {universityData.medium}</span>
-                      </li>
-                      <li className="flex items-center gap-2">
                         <Shield className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                         <span>
                           Approved By: {universityData.approvedBy.join(", ")}
@@ -411,33 +385,7 @@ export default function UniversityPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-3 sm:p-4 lg:p-6">
-                <div className="mb-4 grid sm:grid-cols-2 gap-3 sm:gap-4">
-                  <motion.div
-                    className="bg-blue-50 dark:bg-blue-900/20 p-3 sm:p-4 rounded-lg"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <h4 className="font-medium mb-1 text-sm sm:text-base">
-                      Total Course Fees
-                    </h4>
-                    <p className="text-lg sm:text-xl lg:text-2xl font-bold text-[#00A3D3]">
-                      {universityData.feesUSD}
-                    </p>
-                    <p className="text-muted-foreground text-xs sm:text-sm">
-                      ≈ {universityData.feesINR}
-                    </p>
-                  </motion.div>
-                  <motion.div
-                    className="bg-green-50 dark:bg-green-900/20 p-3 sm:p-4 rounded-lg"
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <h4 className="font-medium mb-1 text-sm sm:text-base">
-                      Hostel Charges
-                    </h4>
-                    <p className="text-lg sm:text-xl lg:text-2xl font-bold text-green-600 dark:text-green-400">
-                      {universityData.hostelCost}
-                    </p>
-                  </motion.div>
-                </div>
+
 
                 {/* Mobile: Card Layout */}
                 <div className="block sm:hidden space-y-3">
@@ -831,7 +779,7 @@ export default function UniversityPage() {
         {/* Sidebar */}
         <div className="space-y-4 sm:space-y-6">
           {/* Quick Apply Card */}
-          <motion.div variants={fadeIn} className="lg:sticky lg:top-6">
+          <motion.div variants={fadeIn} className=" lg:top-6">
             <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
               <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
                 <CardTitle className="text-base sm:text-lg lg:text-xl">
@@ -930,46 +878,6 @@ export default function UniversityPage() {
                   >
                     Chat with Counselor
                   </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Similar Universities */}
-          <motion.div variants={fadeIn}>
-            <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
-                <CardTitle className="text-base sm:text-lg lg:text-xl">
-                  Similar Universities
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-3 sm:p-4 lg:p-6">
-                <div className="space-y-3 sm:space-y-4">
-                  {[1, 2, 3].map((item) => (
-                    <motion.div
-                      key={item}
-                      className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg cursor-pointer"
-                      whileHover={{ x: 5 }}
-                    >
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
-                        <Image
-                          src={universityData.coverImage || "/placeholder.svg"}
-                          alt="University"
-                          width={48}
-                          height={48}
-                          className="object-cover w-full h-full"
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h4 className="font-medium text-sm sm:text-base truncate">
-                          University Name
-                        </h4>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          Country
-                        </p>
-                      </div>
-                    </motion.div>
-                  ))}
                 </div>
               </CardContent>
             </Card>
