@@ -18,7 +18,7 @@ export async function createApp() {
   app.use(
     cors({
       origin: "*", // Allow all origins
-      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
       allowedHeaders: ["Content-Type", "authorization", "api-key"], // Add your custom headers here
       exposedHeaders: ["Authorization"],
     })

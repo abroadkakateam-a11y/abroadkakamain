@@ -312,7 +312,7 @@ router.post(
  */
 router.put(
   "/:id",
-  authenticate,
+  authenticate(),
   uploadUniversityImages,
   validateUniversity(updateUniversitySchema),
   updateUniversity
@@ -347,6 +347,6 @@ router.put(
  *       500:
  *         description: Server error
  */
-router.delete("/:id", authenticate, deleteUniversity);
+router.delete("/:id", authenticate(), deleteUniversity);
 
 export default router;

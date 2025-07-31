@@ -98,15 +98,16 @@ export const validateQuery = (
   try {
     const result = getUniversitiesSchema.safeParse(req.query);
     if (!result.success) {
-      return res.status(400).json({
+      res.status(400).json({
         errors: result.error.issues.map((issue) => ({
           field: issue.path.join("."),
           message: issue.message,
         })),
       });
+      return;
     }
     // Replace query with validated values
-    req.query = result.data as any;
+    Object.assign(req.query, result.data);
     next();
   } catch (error) {
     console.error("Query validation error:", error);
@@ -120,12 +121,13 @@ export const validateUniversity = (schema: z.ZodSchema) => {
     try {
       const result = schema.safeParse(req.body);
       if (!result.success) {
-        return res.status(400).json({
+        res.status(400).json({
           errors: result.error.issues.map((issue) => ({
             field: issue.path.join("."),
             message: issue.message,
           })),
         });
+        return;
       }
       // Replace body with validated values
       req.body = result.data;

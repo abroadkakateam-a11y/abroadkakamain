@@ -22,6 +22,7 @@ class CountryService {
     if (!country) {
       throw new AppError("No country found with that ID", 404);
     }
+    return country;
   }
 
   public async createCountry(countryData: CountryCreateInput) {

@@ -119,6 +119,7 @@ export const deleteCountry = async (
 ) => {
   try {
     const country = await countryService.getCountry(req.params.id);
+
     if (country.flagImage?.public_id) {
       await deleteFromCloudinary(country.flagImage.public_id);
     }
