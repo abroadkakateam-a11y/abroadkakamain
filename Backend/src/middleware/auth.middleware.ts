@@ -2,15 +2,16 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { config } from "../config";
 import { sendError } from "../utils/response.util";
+import { JwtPayload } from '../types/auth.types';
 
-interface JwtPayload {
-  id: string;
-  role: string;
+// Extend the Request type to include user
+export interface AuthenticatedRequest extends Request {
+  user?: JwtPayload;
 }
 
 export function authenticate(roles: string[] = []) {
   return (
-    req: Request & { user?: JwtPayload },
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction
   ): void => {
@@ -23,7 +24,6 @@ export function authenticate(roles: string[] = []) {
 
     try {
       const payload = jwt.verify(token, config.jwtSecret) as JwtPayload;
-      console.log("payload: " + payload);
       if (roles.length && !roles.includes(payload.role)) {
         sendError(res, "Forbidden", "Forbidden", 403);
         return;
