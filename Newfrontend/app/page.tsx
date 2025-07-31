@@ -21,7 +21,6 @@ export const metadata = {
   description: "Welcome to Abroad Kaka! Your Journey Begins",
   openGraph: {
     type: "website",
-    url: "https://github.com/nobruf/shadcn-landing-page.git",
     title: "Abroad KAKA ",
     description: "Welcome to Abroad Kaka! Your Journey Begins",
     images: [
@@ -29,17 +28,8 @@ export const metadata = {
         url: "https://res.cloudinary.com/dbzv9xfjp/image/upload/v1723499276/og-images/shadcn-vue.jpg",
         width: 1200,
         height: 630,
-        alt: "Shadcn - Landing template",
+        alt: "Welcome to Abroad Kaka! Your Journey Begins",
       },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "https://github.com/nobruf/shadcn-landing-page.git",
-    title: "Shadcn - Landing template",
-    description: "Free Shadcn landing page for developers",
-    images: [
-      "https://res.cloudinary.com/dbzv9xfjp/image/upload/v1723499276/og-images/shadcn-vue.jpg",
     ],
   },
 };
@@ -78,7 +68,7 @@ export default function Home() {
     <>
       <HeroSection />
       <SponsorsSection />
-      <PlaneSection/>
+      <PlaneSection />
       <BenefitsSection />
       <HowWeHelpSection />
       <FeaturesSection />

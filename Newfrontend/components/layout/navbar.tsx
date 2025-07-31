@@ -131,58 +131,53 @@ export const Navbar = () => {
                 ))}
               </div>
             </div>
-
-            <SheetFooter className="flex-col sm:flex-col justify-start items-start">
-              <Separator className="mb-2" />
-              <ToggleTheme />
-            </SheetFooter>
           </SheetContent>
         </Sheet>
       </div>
 
       {/* Desktop Nav */}
-      <NavigationMenu className="hidden lg:block mx-auto">
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger className="bg-card text-base">
-              Why Abroad Kaka?
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <div className="grid w-[300px]  gap-5 p-4">
-                <ul className="flex flex-col gap-2">
-                  {featureList.map(({ title, description }) => (
-                    <li
-                      key={title}
-                      className="rounded-md p-3 text-sm hover:bg-muted"
-                    >
-                      <p className="mb-1 font-semibold leading-none text-foreground">
-                        {title}
-                      </p>
-                      <p className="line-clamp-2 text-muted-foreground">
-                        {description}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-
-          {routeList.map(({ href, label }) => (
-            <NavigationMenuItem key={href}>
-              <NavigationMenuLink asChild>
-                <Link href={href} className="text-base px-3">
-                  {label}
-                </Link>
-              </NavigationMenuLink>
+      <div className="hidden lg:flex items-center gap-4">
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className="bg-card text-base">
+                Why Abroad Kaka?
+              </NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid w-[300px] gap-5 p-4">
+                  <ul className="flex flex-col gap-2">
+                    {featureList.map(({ title, description }) => (
+                      <li
+                        key={title}
+                        className="rounded-md p-3 text-sm hover:bg-muted"
+                      >
+                        <p className="mb-1 font-semibold leading-none text-foreground">
+                          {title}
+                        </p>
+                        <p className="line-clamp-2 text-muted-foreground">
+                          {description}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </NavigationMenuContent>
             </NavigationMenuItem>
-          ))}
-        </NavigationMenuList>
-      </NavigationMenu>
 
-      {/* Right-side (desktop) */}
-      <div className="hidden lg:flex gap-1 items-center">
-        <ToggleTheme />
+            {routeList.map(({ href, label }) => (
+              <NavigationMenuItem key={href}>
+                <NavigationMenuLink asChild>
+                  <Link 
+                    href={href} 
+                    className="text-base px-3 py-2 hover:text-[#00A3D3] transition-colors"
+                  >
+                    {label}
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuList>
+        </NavigationMenu>
       </div>
     </header>
   );
