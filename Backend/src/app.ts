@@ -17,10 +17,11 @@ export async function createApp() {
   // ✅ CORS: Allow all origins and headers including custom ones like api-key
   app.use(
     cors({
-      origin: "*", // Allow all origins
+      origin: "https://abroadkakamain.vercel.app", // ✅ only allow your frontend
       methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-      allowedHeaders: ["Content-Type", "authorization", "api-key"], // Add your custom headers here
+      allowedHeaders: ["Content-Type", "authorization", "api-key"],
       exposedHeaders: ["Authorization"],
+      credentials: true, // ✅ If you are sending cookies or auth headers
     })
   );
 
