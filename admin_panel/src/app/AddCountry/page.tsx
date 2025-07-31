@@ -128,7 +128,7 @@ export default function CreateCountryForm(): JSX.Element {
 
     try {
       // Create FormData for file upload
-      console.log(formData.name);
+
       const submitData = new FormData();
       submitData.append("name", formData.name);
       submitData.append("code", formData.code);
