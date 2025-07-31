@@ -22,7 +22,17 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, setUser } from "@/store/slices/userSlice";
 import { UserState } from "@/types/userstate";
-
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 interface RouteProps {
   href: string;
   label: string;
@@ -36,7 +46,7 @@ interface FeatureProps {
 const routeList: RouteProps[] = [
   {
     href: "/AddCollege",
-    label: "Add College",
+    label: "Add University",
   },
   {
     href: "/AddCountry",
@@ -58,7 +68,7 @@ export const Navbar = () => {
     setIsOpen(false);
   }
   return (
-    <header className="shadow-inner bg-opacity-15 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
+    <header className="shadow-xl  bg-opacity-15 w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border border-secondary z-40 rounded-2xl flex justify-between items-center p-2 bg-card">
       <Link href="/" className="font-bold text-lg flex items-center">
         <Image
           src="https://res.cloudinary.com/dt3j2uiyb/image/upload/v1753268940/transparent_1_akqkyt.png"
@@ -117,13 +127,27 @@ export const Navbar = () => {
                   </Button>
                 ))}
                 {user.isAuthenticated && (
-                  <Button
-                    onClick={handleLogout}
-                    className="flex text-red-600 text-md focus:outline-0 outline-0 justify-start text-base "
-                    variant={"ghost"}
-                  >
-                    Logout <LogOutIcon />
-                  </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger className="flex text-red-600 text-md mx-2">
+                      Logout
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure you want to logout ?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleLogout}
+                          className=" flex bg-red-600 text-md"
+                        >
+                          Logout
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 )}
               </div>
             </div>
@@ -151,13 +175,27 @@ export const Navbar = () => {
         </NavigationMenuList>
       </NavigationMenu>
       {user.isAuthenticated && (
-        <Button
-          onClick={handleLogout}
-          className="hidden lg:flex text-red-600 text-md"
-          variant={"ghost"}
-        >
-          Logout <LogOutIcon />
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger className="hidden lg:flex text-red-600 text-md mx-2">
+            Logout
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you absolutely sure you want to logout ?
+              </AlertDialogTitle>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleLogout}
+                className=" flex bg-red-600 text-md"
+              >
+                Logout
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
       {/* Right-side (desktop) */}
       <div className="hidden lg:flex gap-1 items-center"></div>

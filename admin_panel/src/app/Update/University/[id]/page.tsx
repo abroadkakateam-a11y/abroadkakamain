@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
 
 // shadcn components
@@ -47,6 +47,7 @@ interface Country {
 interface Highlight {
   label: string;
   value: string;
+  _id?: string;
 }
 
 interface UniversityFormData {
@@ -78,11 +79,51 @@ interface UniversityFormData {
   comparison?: any[];
 }
 
-export default function CreateUniversityPage() {
+interface UniversityData {
+  _id: string;
+  name: string;
+  university: string;
+  country: {
+    _id: string;
+    name: string;
+    code: string;
+  };
+  location?: string;
+  tagline?: string;
+  coverImage?: string;
+  logo?: string;
+  established?: string | number;
+  highlights?: Highlight[];
+  about?: string;
+  programs?: string[];
+  duration?: string;
+  medium?: string;
+  gpaRequired?: string;
+  feesUSD?: string;
+  feesINR?: string;
+  feeStructure?: any[];
+  hostelCost?: string;
+  approvedBy?: string[];
+  facilities?: string[];
+  eligibility?: string[];
+  admissionSteps?: string[];
+  documents?: string[];
+  reviews?: any[];
+  faqs?: any[];
+  comparison?: any[];
+}
+
+export default function UpdateUniversityPage() {
   const [countries, setCountries] = useState<Country[]>([]);
   const [loading, setLoading] = useState(false);
+  const [fetchingData, setFetchingData] = useState(true);
   const [currentTab, setCurrentTab] = useState("basic");
+  const [universityData, setUniversityData] = useState<UniversityData | null>(
+    null
+  );
   const router = useRouter();
+  const params = useParams();
+  const universityId = params.id;
   const user = useSelector((state: { user: UserState }) => state.user);
 
   const tabs = ["basic", "media", "academics", "other"];
@@ -136,8 +177,67 @@ export default function CreateUniversityPage() {
       }
     };
 
+    const fetchUniversityData = async () => {
+      try {
+        setFetchingData(true);
+        const response = await axios.get(
+          `${BACKEND_URL}/api/universities/${universityId}`,
+          {
+            headers: {
+              "api-key": FRONTEND_API,
+              authorization: `Bearer ${user.accessToken}`,
+            },
+          }
+        );
+
+        const data = response.data.data.university;
+        setUniversityData(data);
+
+        // Pre-populate the form with existing data
+        const formData: UniversityFormData = {
+          name: data.name || "",
+          university: data.university || "",
+          country: data.country?._id || "",
+          location: data.location || "",
+          tagline: data.tagline || "",
+          coverImage: null, // Files can't be pre-populated
+          logo: null, // Files can't be pre-populated
+          established: data.established ? Number(data.established) : undefined,
+          highlights: data.highlights || [],
+          about: data.about || "",
+          programs: data.programs || [],
+          duration: data.duration || "",
+          medium: data.medium || "",
+          gpaRequired: data.gpaRequired || "",
+          feesUSD: data.feesUSD || "",
+          feesINR: data.feesINR || "",
+          feeStructure: data.feeStructure || [],
+          hostelCost: data.hostelCost || "",
+          approvedBy: data.approvedBy || [],
+          facilities: data.facilities || [],
+          eligibility: data.eligibility || [],
+          admissionSteps: data.admissionSteps || [],
+          documents: data.documents || [],
+          reviews: data.reviews || [],
+          faqs: data.faqs || [],
+          comparison: data.comparison || [],
+        };
+
+        // Reset form with fetched data
+        form.reset(formData);
+      } catch (error) {
+        console.error("Failed to fetch university data", error);
+        toast.error("Failed to fetch university data");
+      } finally {
+        setFetchingData(false);
+      }
+    };
+
     fetchCountries();
-  }, []);
+    if (universityId && user.accessToken) {
+      fetchUniversityData();
+    }
+  }, [universityId, user.accessToken, form, router]);
 
   const onSubmit = async (data: UniversityFormData) => {
     setLoading(true);
@@ -207,7 +307,6 @@ export default function CreateUniversityPage() {
               }
             } else {
               if (key === "established") {
-                // Send established as number (FormData will convert to string, but backend should parse correctly)
                 formData.append(key, value.toString());
               } else {
                 formData.append(key, String(value));
@@ -216,8 +315,8 @@ export default function CreateUniversityPage() {
           }
         });
 
-        const res = await axios.post(
-          `${BACKEND_URL}/api/universities`,
+        await axios.put(
+          `${BACKEND_URL}/api/universities/${universityId}`,
           formData,
           {
             headers: {
@@ -241,8 +340,8 @@ export default function CreateUniversityPage() {
           logo: undefined,
         };
 
-        const res = await axios.post(
-          `${BACKEND_URL}/api/universities`,
+        await axios.put(
+          `${BACKEND_URL}/api/universities/${universityId}`,
           processedData,
           {
             headers: {
@@ -254,13 +353,13 @@ export default function CreateUniversityPage() {
         );
       }
 
-      toast.success("University created successfully");
+      toast.success("University updated successfully");
       router.push("/");
     } catch (error: any) {
-      console.error("Creation failed", error);
+      console.error("Update failed", error);
       toast.error(
-        error.response.data.message ||
-          "Failed to create university Add required fields"
+        error.response?.data?.message ||
+          "Failed to update university. Please check required fields."
       );
     } finally {
       setLoading(false);
@@ -312,6 +411,17 @@ export default function CreateUniversityPage() {
 
   const isLastTab = currentTab === tabs[tabs.length - 1];
   const isFirstTab = currentTab === tabs[0];
+
+  if (fetchingData) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin">
+          <LoaderCircle size={64} className="text-blue-400" />
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-50">
@@ -324,7 +434,9 @@ export default function CreateUniversityPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Create New University</h1>
+      <h1 className="text-3xl font-bold mb-6">
+        Update University: {universityData?.name}
+      </h1>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -387,7 +499,7 @@ export default function CreateUniversityPage() {
                         </FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          defaultValue={field.value}
+                          value={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -546,21 +658,35 @@ export default function CreateUniversityPage() {
                       <FormItem>
                         <FormLabel>Cover Image</FormLabel>
                         <FormControl>
-                          <div className="flex items-center gap-4">
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                if (e.target.files?.[0]) {
-                                  field.onChange(e.target.files[0]);
-                                }
-                              }}
-                            />
-                            {field.value && (
-                              <div className="text-sm text-gray-600">
-                                {field.value.name}
+                          <div className="space-y-2">
+                            {universityData?.coverImage && (
+                              <div className="mb-2">
+                                <p className="text-sm text-gray-600 mb-2">
+                                  Current Cover Image:
+                                </p>
+                                <img
+                                  src={universityData.coverImage}
+                                  alt="Current cover"
+                                  className="w-32 h-20 object-cover rounded border"
+                                />
                               </div>
                             )}
+                            <div className="flex items-center gap-4">
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  if (e.target.files?.[0]) {
+                                    field.onChange(e.target.files[0]);
+                                  }
+                                }}
+                              />
+                              {field.value && (
+                                <div className="text-sm text-gray-600">
+                                  {field.value.name}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </FormControl>
                         <FormMessage />
@@ -575,21 +701,35 @@ export default function CreateUniversityPage() {
                       <FormItem>
                         <FormLabel>Logo</FormLabel>
                         <FormControl>
-                          <div className="flex items-center gap-4">
-                            <Input
-                              type="file"
-                              accept="image/*"
-                              onChange={(e) => {
-                                if (e.target.files?.[0]) {
-                                  field.onChange(e.target.files[0]);
-                                }
-                              }}
-                            />
-                            {field.value && (
-                              <div className="text-sm text-gray-600">
-                                {field.value.name}
+                          <div className="space-y-2">
+                            {universityData?.logo && (
+                              <div className="mb-2">
+                                <p className="text-sm text-gray-600 mb-2">
+                                  Current Logo:
+                                </p>
+                                <img
+                                  src={universityData.logo}
+                                  alt="Current logo"
+                                  className="w-16 h-16 object-cover rounded border"
+                                />
                               </div>
                             )}
+                            <div className="flex items-center gap-4">
+                              <Input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => {
+                                  if (e.target.files?.[0]) {
+                                    field.onChange(e.target.files[0]);
+                                  }
+                                }}
+                              />
+                              {field.value && (
+                                <div className="text-sm text-gray-600">
+                                  {field.value.name}
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </FormControl>
                         <FormMessage />
@@ -918,7 +1058,7 @@ export default function CreateUniversityPage() {
 
               {isLastTab && (
                 <Button type="submit" disabled={loading}>
-                  {loading ? "Creating..." : "Create University"}
+                  {loading ? "Updating..." : "Update University"}
                 </Button>
               )}
             </div>

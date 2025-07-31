@@ -7,19 +7,7 @@ import { useSelector } from "react-redux";
 import { UserState } from "@/types/userstate";
 import axios from "axios";
 import { toast } from "sonner";
-import { Code, Trash2 } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
+
 interface Country {
   _id: string;
   name: string;
@@ -86,41 +74,42 @@ export default function Dashboard() {
   }, []);
 
   const handleDeleteCountry = async (id: string) => {
-    try {
-      const response = await axios.delete(`${BACKEND_URL}/api/country/${id}`, {
-        headers: {
-          "api-key": FRONTEND_API as string,
-          authorization: `Bearer ${user.accessToken}`,
-        },
-      });
-      toast.success("Deleted successfully");
-      setCountries(countries.filter((country) => country._id !== id));
-      // Also remove universities from this country
-      setUniversities(universities.filter((uni) => uni.country._id !== id));
-    } catch (error) {
-      toast.error("Error Deleting  Country please try again");
-      console.error("Error deleting country:", error);
+    if (confirm("Are you sure you want to delete this country?")) {
+      try {
+        const response = await axios.delete(
+          `${BACKEND_URL}/api/countries/${id}`,
+          {
+            headers: {
+              "api-key": FRONTEND_API as string,
+              authorization: `Bearer ${user.accessToken}`,
+            },
+          }
+        );
+        toast.success("Deleted successfully");
+        setCountries(countries.filter((country) => country._id !== id));
+        // Also remove universities from this country
+        setUniversities(universities.filter((uni) => uni.country._id !== id));
+      } catch (error) {
+        toast.error("Error Deleting  Country please try again");
+        console.error("Error deleting country:", error);
+      }
     }
   };
 
   const handleDeleteUniversity = async (id: string) => {
-    try {
-      const response = await axios.delete(
-        `${BACKEND_URL}/api/universities/${id}`,
-        {
+    if (confirm("Are you sure you want to delete this university?")) {
+      try {
+        const response = await axios.delete(`/api/universities/${id}`, {
           headers: {
             "api-key": FRONTEND_API as string,
             authorization: `Bearer ${user.accessToken}`,
           },
-        }
-      );
-      toast.success("Deleted University");
-      setUniversities(
-        universities.filter((university) => university._id !== id)
-      );
-    } catch (error) {
-      toast.error("Error Deleting  Country please try again");
-      console.error("Error deleting university:", error);
+        });
+        toast.success("Deleted University");
+      } catch (error) {
+        toast.error("Error Deleting  Country please try again");
+        console.error("Error deleting university:", error);
+      }
     }
   };
 
@@ -200,9 +189,22 @@ export default function Dashboard() {
                   activeTab === "countries" ? "/Countries" : "/Universities"
                 )
               }
-              className="bg-blue-600 gap-2 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center"
             >
-              <Code />
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
 
               {activeTab === "countries" ? "All Countries" : "All Universities"}
             </button>
@@ -301,46 +303,12 @@ export default function Dashboard() {
                         >
                           Edit
                         </button>
-
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={(e) => e.stopPropagation()} // Prevent card click
-                              className="flex-1 hover:bg-red-50 hover:border-red-300 hover:text-red-600 transition-colors bg-transparent"
-                              disabled={loading}
-                            >
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              {loading ? "Deleting..." : "Delete"}
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Are you absolutely sure?
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This action cannot be undone. This will
-                                permanently delete the country and remove all
-                                associated data.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel disabled={loading}>
-                                Cancel
-                              </AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => handleDeleteCountry(country._id)}
-                                disabled={loading}
-                                className="bg-red-600 hover:bg-red-700 text-white"
-                              >
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                {loading ? "Deleting..." : "Delete"}
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                        <button
+                          onClick={() => handleDeleteCountry(country._id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))
@@ -391,7 +359,7 @@ export default function Dashboard() {
                           <img
                             src={university.logo}
                             alt={`${university.name} logo`}
-                            className="h-8 w-12 object-cover"
+                            className="h-10 w-10 object-contain"
                           />
                         ) : (
                           <div className="h-10 w-10 bg-gray-200 rounded-full flex items-center justify-center text-xs text-gray-500">
@@ -449,48 +417,12 @@ export default function Dashboard() {
                         >
                           Edit
                         </button>
-
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={(e) => e.stopPropagation()} // Prevent card click
-                              className="flex-1 hover:bg-red-50 hover:border-red-300 hover:text-red-600 transition-colors bg-transparent"
-                              disabled={loading}
-                            >
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              {loading ? "Deleting..." : "Delete"}
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Are you absolutely sure?
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This action cannot be undone. This will
-                                permanently delete the country and remove all
-                                associated data.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel disabled={loading}>
-                                Cancel
-                              </AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() =>
-                                  handleDeleteUniversity(university._id)
-                                }
-                                disabled={loading}
-                                className="bg-red-600 hover:bg-red-700 text-white"
-                              >
-                                <Trash2 className="h-4 w-4 mr-2" />
-                                {loading ? "Deleting..." : "Delete"}
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
+                        <button
+                          onClick={() => handleDeleteUniversity(university._id)}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          Delete
+                        </button>
                       </td>
                     </tr>
                   ))

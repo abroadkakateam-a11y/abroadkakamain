@@ -31,12 +31,12 @@ router.post(
 
 router.put(
   "/:id",
-  authenticate,
+  authenticate(),
   uploadUniversityImages,
   validateUniversity(updateUniversitySchema),
   updateUniversity
 );
 
-router.delete("/:id", authenticate, deleteUniversity);
+router.delete("/:id", authenticate(), deleteUniversity);
 
 export default router;
