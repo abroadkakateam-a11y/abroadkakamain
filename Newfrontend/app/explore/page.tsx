@@ -301,17 +301,42 @@ export default function UniversitiesPage() {
 
     return (
         <div className="bg-gray-50">
-
+            {/* Hero Section */}
+            <section className="bg-gradient-to-r mt-8 from-blue-600 to-cyan-500 text-white py-20">
+                <div className="container mx-auto px-4 text-center">
+                    <h1 className="text-4xl md:text-5xl font-bold mb-6">World-Class Medical Universities</h1>
+                    <p className="text-xl max-w-2xl mx-auto mb-8">
+                        Discover top-ranked medical schools across the globe with our comprehensive directory
+                    </p>
+                    <div className="max-w-2xl mx-auto flex gap-2">
+                        <Input
+                            placeholder="Search universities..."
+                            className="bg-white/80 border-white/30 text-gray-900 placeholder-gray-600"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            aria-label="Search universities"
+                        />
+                        <Button
+                            variant="secondary"
+                            aria-label="Search"
+                            onClick={() => {
+                                if (searchTerm.trim()) {
+                                    fetchUniversities(1, pagination.limit, selectedCountryId === "all" ? "all" : selectedCountryId, searchTerm.trim());
+                                }
+                            }}
+                        >
+                            Search
+                        </Button>
+                    </div>
+                </div>
+            </section>
             {/* Universities List Section */}
             <section className="py-16">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
 
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                        <h2 className="text-3xl font-bold">All Universities</h2>
 
-                            <h2 className="text-3xl font-bold">All Universities</h2>
-
-                        </div>
                         <div className="flex gap-4 w-full md:w-auto">
                             {isLoadingCountries ? (
                                 <div className="w-[180px] h-10 bg-gray-200 rounded-md animate-pulse" />
@@ -542,46 +567,3 @@ export default function UniversitiesPage() {
         </div>
     );
 }
-
-{/*
-    
-            <section className="py-16">
-                <div className="container mx-auto px-4">
-                    {universitiesByCountry.map((country) => (
-                        <div key={country.id} className="mb-12">
-                            <div className="flex justify-between items-center mb-6">
-                                <h2 className="text-2xl font-bold">
-                                    {country.flag} {country.name} Medical Universities
-                                </h2>
-                                <Link href={`/universities/${country.id}`}>
-                                    <Button variant="link" className="flex items-center">
-                                        View All <ChevronRight className="ml-1 h-4 w-4" />
-                                    </Button>
-                                </Link>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {country.universities.slice(0, 3).map((uni) => (
-                                    <Card key={uni.id}>
-                                        <CardContent className="p-6">
-                                            <h3 className="text-lg font-bold">{uni.name}</h3>
-                                            <p className="text-gray-600 mt-2">{uni.city}</p>
-                                            <div className="mt-4 flex justify-between text-sm">
-                                                <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                                                    Rank: #{uni.ranking}
-                                                </span>
-                                                <span className="text-gray-700">{uni.tuitionFee}</span>
-                                            </div>
-                                            <Button variant="outline" className="w-full mt-4">
-                                                View Details
-                                            </Button>
-                                        </CardContent>
-                                    </Card>
-                                ))}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </section>    
-    
-*/}

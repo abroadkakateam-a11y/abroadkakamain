@@ -25,21 +25,24 @@ interface UniversityFiles {
   coverImage?: Express.Multer.File[];
   reviewImages?: Express.Multer.File[];
 }
-
 interface QueryParams {
-  page: number;
-  limit: number;
+  page?: number;
+  limit?: number;
   country?: string;
   program?: string;
   search?: string;
   sort?: string;
 }
-
-const buildFilter = (query: QueryParams) => {
+const buildFilter = (query: Partial<QueryParams>) => {
   const filter: any = {};
 
-  if (query.country) {
-    filter.country = new mongoose.Types.ObjectId(query.country);
+  // Handle country filter - skip if "all"
+  if (query.country && query.country !== "all") {
+    try {
+      filter.country = new mongoose.Types.ObjectId(query.country);
+    } catch (error) {
+      throw new AppError("Invalid country ID format", 400);
+    }
   }
 
   if (query.program) {
@@ -56,7 +59,6 @@ const buildFilter = (query: QueryParams) => {
 
   return filter;
 };
-
 // Fixed helper function to build sort options
 const buildSort = (sortQuery?: string): Record<string, SortOrder> => {
   if (!sortQuery) return { createdAt: -1 }; // Default sort by newest first
@@ -112,7 +114,15 @@ export const getUniversities = async (
 ) => {
   try {
     // Query is already validated by middleware, so we can use it directly
-    const { page, limit, ...query } = req.query as unknown as QueryParams;
+    const {
+      page: pageParam,
+      limit: limitParam,
+      ...query
+    } = req.query as unknown as QueryParams;
+
+    // Provide default values for page and limit
+    const page = pageParam || 1;
+    const limit = limitParam || 10;
 
     const filter = buildFilter({ page, limit, ...query });
     const sort = buildSort(query.sort);

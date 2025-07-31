@@ -11,7 +11,7 @@ import { AnimatedTooltip } from "@/components/ui/animated-tooltip";
 
 const countries = [
   { code: "ru", name: "Russia" },
-  { code: "uz", name: "Uzbekistan" }, // Fixed country code
+  { code: "uz", name: "Uzbekistan" },
   { code: "kz", name: "Kazakhstan" },
   { code: "ge", name: "Georgia" },
 ];
@@ -110,30 +110,29 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-10 dark:opacity-5" />
       </div>
 
-      <div className="relative mx-auto my-10 flex max-w-full flex-col items-center justify-center">
-        {/* Decorative borders */}
-        <div className="absolute inset-y-0 left-0 h-full w-px bg-gradient-to-b from-transparent via-neutral-300 to-transparent dark:via-neutral-700">
+      <div className="relative mx-auto my-4 md:my-10 flex max-w-full flex-col items-center justify-center px-4 sm:px-6">
+        {/* Decorative borders - hidden on mobile */}
+        <div className="hidden md:block absolute inset-y-0 left-0 h-full w-px bg-gradient-to-b from-transparent via-neutral-300 to-transparent dark:via-neutral-700">
           <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
         </div>
-        <div className="absolute inset-y-0 right-0 h-full w-px bg-gradient-to-b from-transparent via-neutral-300 to-transparent dark:via-neutral-700">
+        <div className="hidden md:block absolute inset-y-0 right-0 h-full w-px bg-gradient-to-b from-transparent via-neutral-300 to-transparent dark:via-neutral-700">
           <div className="absolute h-40 w-px bg-gradient-to-b from-transparent via-blue-500 to-transparent" />
         </div>
 
-
-
-
-        {/* Main heading */}
-        <div className="px-4 py-10 md:py-10">
+        {/* Main content */}
+        <div className="px-4 py-6 md:py-10 w-full">
           {/* Live badge */}
           <div className="flex justify-center">
-            <Badge variant="outline" className="text-sm py-6 h-3 mb-8">
+            <Badge variant="outline" className="text-xs sm:text-sm py-1 sm:py-1.5 h-auto mb-4 sm:mb-8">
               <span className="mr-2 text-primary">
-                <Badge className="bg-[#00A3D3] text-white hover:bg-[#00A3D3]/80">Live</Badge>
+                <Badge className="bg-[#00A3D3] text-white hover:bg-[#00A3D3]/80 text-xs">Live</Badge>
               </span>
               <span>New Admissions Open!</span>
             </Badge>
           </div>
-          <h1 className="relative z-10 mx-auto max-w-4xl text-center text-4xl font-bold text-slate-700 md:text-5xl lg:text-7xl dark:text-slate-300">
+
+          {/* Main heading with responsive text sizes */}
+          <h1 className="relative z-10 mx-auto max-w-4xl text-center text-3xl font-bold text-slate-700 sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl dark:text-slate-300">
             {"Welcome to "
               .split(" ")
               .map((word, index) => (
@@ -146,7 +145,7 @@ export const HeroSection = () => {
                     delay: index * 0.1,
                     ease: "easeInOut",
                   }}
-                  className="mr-2 inline-block"
+                  className="mr-1 sm:mr-2 inline-block"
                 >
                   {word}
                 </motion.span>
@@ -159,7 +158,7 @@ export const HeroSection = () => {
                 delay: 0.7,
                 ease: "easeInOut",
               }}
-              className="mx-2 inline-block bg-gradient-to-r from-[#00A3D3] to-blue-500 bg-clip-text text-transparent"
+              className="mx-1 sm:mx-2 inline-block bg-gradient-to-r from-[#00A3D3] to-blue-500 bg-clip-text text-transparent"
             >
               Abroad Kaka
             </motion.span>
@@ -175,7 +174,7 @@ export const HeroSection = () => {
                     delay: 0.9 + index * 0.1,
                     ease: "easeInOut",
                   }}
-                  className="mr-2 inline-block"
+                  className="mr-1 sm:mr-2 inline-block"
                 >
                   {word}
                 </motion.span>
@@ -186,7 +185,7 @@ export const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: 0.8 }}
-            className="relative z-10 mx-auto max-w-2xl py-6 text-center text-lg font-normal text-neutral-600 dark:text-neutral-400"
+            className="relative z-10 mx-auto max-w-2xl py-4 sm:py-6 text-center text-base sm:text-lg font-normal text-neutral-600 dark:text-neutral-400"
           >
             We're more than just an MBBS consultancy — we're your academic family abroad. Get expert guidance, Indian support, and everything you need to become a doctor.
           </motion.p>
@@ -197,82 +196,67 @@ export const HeroSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="w-full py-8 rounded-xl mb-8"
+            className="w-full py-6 md:py-8 rounded-xl mb-6 md:mb-8"
           >
-            <div className="max-w-6xl mx-auto px-4">
-              <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-                {/* Trusted Students Section */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className="w-full mb-8"
-                >
-                  <div className="max-w-6xl mx-auto px-4">
-
-
-                    {/* Student avatars - full width */}
-                    <div className="w-full mb-8">
-                      <div className="flex flex-col items-center">
-                        <h3 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-4 flex items-center gap-2">
-                          Trusted by 1000+ students across India
-                          <BadgeCheck className="w-6 h-6 text-green-500" />
-                        </h3>
-                        <div className="w-full flex justify-center">
-                          <AnimatedTooltip items={people} />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* CTA Buttons */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: 1 }}
-                      className="relative z-10 flex flex-row sm:flex-row items-center justify-center gap-4 mt-8"
-                    >
-                      <Button
-                        className="w-full sm:w-auto bg-[#00A3D3] hover:bg-[#0087b3] font-semibold px-8 py-6 text-lg"
-                        size="lg"
-                      >
-                        Start Your MBBS Journey
-                        <ArrowRight className="size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
-                      </Button>
-
-                      <Button
-                        asChild
-                        variant="outline"
-                        className="w-full sm:w-auto font-semibold px-8 py-6 text-lg border-2"
-                        size="lg"
-                      >
-                        <Link
-                          href="https://wa.me/7412028919?text=Hello%2C%20I%20would%20love%20to%20know%20more%20about%20abroad%20kaka."
-                          target="_blank"
-                        >
-                          Chat on WhatsApp
-                        </Link>
-                      </Button>
-                    </motion.div>
+            <div className="max-w-6xl mx-auto px-2 sm:px-4">
+              <div className="flex flex-col items-center">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-slate-200 mb-3 sm:mb-4 flex items-center gap-2">
+                  Trusted by 1000+ students across India
+                  <BadgeCheck className="w-5 h-5 sm:w-6 sm:h-6 text-green-500" />
+                </h3>
+                <div className="w-full flex flex-row justify-center">
+                  <div className="flex flex-row items-center justify-center mb-10 w-full">
+                    <AnimatedTooltip items={people} />
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
           </motion.div>
-          {/* Trust indicators - full width grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          {/* CTA Buttons with responsive sizing */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 1 }}
+            className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 md:mt-8"
+          >
+            <Button
+              className="w-full sm:w-auto bg-[#00A3D3] hover:bg-[#0087b3] font-semibold px-6 py-5 sm:px-8 sm:py-6 text-base sm:text-lg"
+              size="lg"
+            >
+              Start Your MBBS Journey
+              <ArrowRight className="size-4 sm:size-5 ml-2 group-hover/arrow:translate-x-1 transition-transform" />
+            </Button>
+
+            <Button
+              asChild
+              variant="outline"
+              className="w-full sm:w-auto font-semibold px-6 py-5 sm:px-8 sm:py-6 text-base sm:text-lg border-2"
+              size="lg"
+            >
+              <Link
+                href="https://wa.me/7412028919?text=Hello%2C%20I%20would%20love%20to%20know%20more%20about%20abroad%20kaka."
+                target="_blank"
+              >
+                Chat on WhatsApp
+              </Link>
+            </Button>
+          </motion.div>
+
+          {/* Trust indicators - responsive grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-8 md:mt-12">
             <motion.div
               whileHover={{ y: -5 }}
-              className="flex items-start gap-4 p-6 rounded-xl bg-white dark:bg-gray-800 shadow-sm"
+              className="flex items-start gap-3 sm:gap-4 p-4 sm:p-6 rounded-xl bg-white dark:bg-gray-800 shadow-sm"
             >
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30">
-                  <Check className="w-6 h-6 text-green-600 dark:text-green-400" />
+                <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-green-100 dark:bg-green-900/30">
+                  <Check className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-400" />
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">100% Genuine</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <h3 className="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-200">100% Genuine</h3>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
                   Verified universities with no fake promises
                 </p>
               </div>
@@ -280,16 +264,16 @@ export const HeroSection = () => {
 
             <motion.div
               whileHover={{ y: -5 }}
-              className="flex items-start gap-4 p-6 rounded-xl bg-white dark:bg-gray-800 shadow-sm"
+              className="flex items-start gap-3 sm:gap-4 p-4 sm:p-6 rounded-xl bg-white dark:bg-gray-800 shadow-sm"
             >
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30">
-                  <Shield className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+                <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-blue-100 dark:bg-blue-900/30">
+                  <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">Secure Process</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <h3 className="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-200">Secure Process</h3>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
                   End-to-end encrypted documentation
                 </p>
               </div>
@@ -297,34 +281,33 @@ export const HeroSection = () => {
 
             <motion.div
               whileHover={{ y: -5 }}
-              className="flex items-start gap-4 p-6 rounded-xl bg-white dark:bg-gray-800 shadow-sm"
+              className="flex items-start gap-3 sm:gap-4 p-4 sm:p-6 rounded-xl bg-white dark:bg-gray-800 shadow-sm"
             >
               <div className="flex-shrink-0">
-                <div className="flex items-center justify-center w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30">
-                  <Lock className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-purple-100 dark:bg-purple-900/30">
+                  <Lock className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 dark:text-purple-400" />
                 </div>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-200">No Hidden Fees</h3>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <h3 className="text-base sm:text-lg font-semibold text-slate-800 dark:text-slate-200">No Hidden Fees</h3>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
                   Transparent pricing with no surprises
                 </p>
               </div>
             </motion.div>
           </div>
 
-
-          {/* Preview image */}
+          {/* Preview image with responsive sizing */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             viewport={{ once: true }}
-            className="relative mt-20 rounded-3xl border border-neutral-200 bg-neutral-100 p-2 shadow-xl overflow-hidden dark:border-neutral-800 dark:bg-neutral-900"
+            className="relative mt-12 sm:mt-16 md:mt-20 rounded-2xl sm:rounded-3xl border border-neutral-200 bg-neutral-100 p-1 sm:p-2 shadow-xl overflow-hidden dark:border-neutral-800 dark:bg-neutral-900"
           >
-            <div className="w-full overflow-hidden rounded-xl">
+            <div className="w-full overflow-hidden rounded-lg sm:rounded-xl">
               <img
-                src="https://res.cloudinary.com/dt3j2uiyb/image/upload/v1753444119/SG6FlsGLskI-HD_ftjwew.jpg" // Replace with your actual image
+                src="https://res.cloudinary.com/dt3j2uiyb/image/upload/v1753444119/SG6FlsGLskI-HD_ftjwew.jpg"
                 alt="University preview"
                 className="aspect-video w-full object-cover"
                 height={720}
@@ -338,30 +321,3 @@ export const HeroSection = () => {
     </section>
   );
 };
-
-/*
-{/* Countries served - full width above 
-                    <div className="w-full mb-8">
-                      <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4 text-center">
-                        SERVING STUDENTS IN
-                      </h4>
-                      <div className="flex flex-wrap justify-center gap-6">
-                        {countries.map((country) => (
-                          <motion.div
-                            key={country.code}
-                            whileHover={{ scale: 1.1 }}
-                            className="flex flex-col items-center"
-                          >
-                            <img
-                              src={`https://flagcdn.com/w80/${country.code}.png`}
-                              alt={country.name}
-                              className="w-12 h-9 rounded shadow-lg object-cover"
-                            />
-                            <span className="text-sm mt-2 text-slate-600 dark:text-slate-400 font-medium">
-                              {country.name}
-                            </span>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-*/
