@@ -147,7 +147,7 @@ const getIconForLabel = (label: string) => {
   if (label.includes("Program")) return GraduationCap;
   if (label.includes("Approval")) return ShieldCheck;
   if (label.includes("Facilit")) return Building2;
-  return MapPin; // default
+  return CheckCircle; // default
 };
 
 export default function UniversityPage() {
@@ -229,22 +229,23 @@ export default function UniversityPage() {
       initial="hidden"
       animate="visible"
       variants={stagger}
-      className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-6 sm:py-6 lg:py-8"
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8"
     >
-      {/* Hero Section */}
+      {/* Hero Section - Mobile Optimized */}
       <motion.section variants={fadeIn}>
-        <div className="relative rounded-xl sm:rounded-2xl overflow-hidden mb-6 sm:mb-8 lg:mb-10 h-48 sm:h-64 md:h-80 lg:h-96">
+        <div className="relative rounded-lg sm:rounded-xl overflow-hidden mb-4 sm:mb-6 lg:mb-8 h-48 sm:h-64 md:h-80 lg:h-96">
           <Image
             src={universityData.coverImage || "/placeholder.svg"}
             alt="University Cover"
             fill
             className="object-cover"
             priority
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-3 sm:p-4 md:p-6 lg:p-8">
-            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 sm:gap-4 lg:gap-6 w-full">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4 sm:p-6 md:p-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 sm:gap-4 w-full">
               <motion.div
-                className="relative h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 rounded-lg overflow-hidden border-2 sm:border-4 border-white flex-shrink-0"
+                className="relative h-12 w-12 sm:h-16 sm:w-16 md:h-20 md:w-20 rounded-lg overflow-hidden border-2 border-white flex-shrink-0"
                 whileHover={{ scale: 1.05 }}
               >
                 <Image
@@ -252,11 +253,12 @@ export default function UniversityPage() {
                   alt="University Logo"
                   fill
                   className="object-cover bg-white"
+                  sizes="(max-width: 640px) 48px, (max-width: 768px) 64px, 80px"
                 />
               </motion.div>
               <div className="flex-1 min-w-0">
                 <motion.h1
-                  className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight"
+                  className="text-xl sm:text-2xl md:text-3xl font-bold text-white leading-tight"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 }}
@@ -264,7 +266,7 @@ export default function UniversityPage() {
                   {universityData.name}
                 </motion.h1>
                 <motion.p
-                  className="text-xs sm:text-sm md:text-base lg:text-lg text-white/80 mt-1 sm:mt-2"
+                  className="text-sm sm:text-base text-white/80 mt-1 sm:mt-2"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
@@ -272,14 +274,14 @@ export default function UniversityPage() {
                   {universityData.tagline}
                 </motion.p>
                 <motion.div
-                  className="flex flex-col xs:flex-row gap-2 sm:gap-3 mt-3 sm:mt-4"
+                  className="flex flex-wrap gap-2 mt-3 sm:mt-4"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
                 >
                   <Button
                     size="sm"
-                    className="bg-[#00A3D3] hover:bg-[#0087b3] text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5"
+                    className="bg-[#00A3D3] hover:bg-[#0087b3] text-xs sm:text-sm px-3 sm:px-4 py-2"
                   >
                     Apply Now
                   </Button>
@@ -290,10 +292,10 @@ export default function UniversityPage() {
         </div>
       </motion.section>
 
-      {/* Quick Facts */}
+      {/* Quick Facts - Mobile Optimized */}
       <motion.section
         variants={fadeIn}
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3 lg:gap-4 mb-6 sm:mb-8 lg:mb-12"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-2 sm:gap-3 mb-4 sm:mb-6"
       >
         {allHighlights.map(({ label, value, _id }) => {
           const Icon = getIconForLabel(label);
@@ -302,15 +304,15 @@ export default function UniversityPage() {
               key={_id}
               variants={fadeIn}
               whileHover={{ y: -5 }}
-              className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 shadow-sm border dark:border-gray-700 text-center"
+              className="bg-white dark:bg-gray-800 rounded-lg p-2 sm:p-3 shadow-sm border dark:border-gray-700 text-center"
             >
-              <div className="bg-[#00A3D3]/10 w-6 h-6 sm:w-8 sm:h-8 lg:w-12 lg:h-12 rounded-full flex items-center justify-center mx-auto mb-1 sm:mb-2 lg:mb-3">
-                <Icon className="text-[#00A3D3] w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+              <div className="bg-[#00A3D3]/10 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center mx-auto mb-1 sm:mb-2">
+                <Icon className="text-[#00A3D3] w-3 h-3 sm:w-4 sm:h-4" />
               </div>
               <h4 className="font-medium text-xs sm:text-sm dark:text-white leading-tight">
                 {label}
               </h4>
-              <p className="text-muted-foreground text-xs sm:text-sm mt-0.5 sm:mt-1">
+              <p className="text-muted-foreground text-xs sm:text-sm mt-0.5">
                 {value}
               </p>
             </motion.div>
@@ -318,28 +320,29 @@ export default function UniversityPage() {
         })}
       </motion.section>
 
-      {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-        <div className="lg:col-span-2 space-y-4 sm:space-y-6 lg:space-y-8">
+      {/* Main Content Grid - Stack on mobile */}
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
+        {/* Left Column - Main Content */}
+        <div className="lg:flex-1 space-y-4 sm:space-y-6">
           {/* About Section */}
           <motion.section variants={fadeIn}>
-            <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
-                <CardTitle className="text-base sm:text-lg lg:text-xl flex items-center gap-2">
+            <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-4 sm:p-6">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                   <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A3D3]" />
                   About the University
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 sm:p-4 lg:p-6">
+              <CardContent className="p-4 sm:p-6">
                 <p className="text-muted-foreground leading-relaxed text-sm sm:text-base">
                   {universityData.about}
                 </p>
 
-                {/* Photo Gallery */}
+                {/* Photo Gallery - Mobile optimized */}
                 {universityData.photos.length > 0 && (
-                  <div className="mt-6">
-                    <h4 className="font-medium mb-3 text-sm sm:text-base">Gallery</h4>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  <div className="mt-4 sm:mt-6">
+                    <h4 className="font-medium mb-2 sm:mb-3 text-sm sm:text-base">Gallery</h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
                       {universityData.photos.map((photo) => (
                         <motion.div
                           key={photo._id}
@@ -351,6 +354,7 @@ export default function UniversityPage() {
                             alt={photo.caption}
                             fill
                             className="object-cover"
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 300px"
                           />
                         </motion.div>
                       ))}
@@ -363,17 +367,17 @@ export default function UniversityPage() {
 
           {/* Program Details */}
           <motion.section variants={fadeIn}>
-            <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
-                <CardTitle className="text-base sm:text-lg lg:text-xl flex items-center gap-2">
+            <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-4 sm:p-6">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                   <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A3D3]" />
                   Program Details
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 sm:p-4 lg:p-6">
-                <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div>
-                    <h4 className="font-medium mb-2 text-sm sm:text-base">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                  <div className="flex-1">
+                    <h4 className="font-medium mb-2 sm:mb-3 text-sm sm:text-base">
                       Course Information
                     </h4>
                     <ul className="space-y-2 text-muted-foreground text-sm sm:text-base">
@@ -397,8 +401,8 @@ export default function UniversityPage() {
                       </li>
                     </ul>
                   </div>
-                  <div>
-                    <h4 className="font-medium mb-2 text-sm sm:text-base">
+                  <div className="flex-1">
+                    <h4 className="font-medium mb-2 sm:mb-3 text-sm sm:text-base">
                       Programs Offered
                     </h4>
                     <div className="flex flex-wrap gap-1 sm:gap-2">
@@ -413,7 +417,7 @@ export default function UniversityPage() {
                       ))}
                     </div>
 
-                    <h4 className="font-medium mt-4 mb-2 text-sm sm:text-base">
+                    <h4 className="font-medium mt-3 sm:mt-4 mb-2 sm:mb-3 text-sm sm:text-base">
                       Facilities
                     </h4>
                     <div className="flex flex-wrap gap-1 sm:gap-2">
@@ -447,15 +451,15 @@ export default function UniversityPage() {
 
           {/* Fee Structure */}
           <motion.section variants={fadeIn}>
-            <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
-                <CardTitle className="text-base sm:text-lg lg:text-xl flex items-center gap-2">
+            <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-4 sm:p-6">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                   <Banknote className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A3D3]" />
                   Fee Structure
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 sm:p-4 lg:p-6">
-                <div className="mb-4 flex justify-between items-center">
+              <CardContent className="p-4 sm:p-6">
+                <div className="mb-3 sm:mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                   <div>
                     <h4 className="font-medium text-sm sm:text-base">Total Fees</h4>
                     <p className="text-muted-foreground text-xs sm:text-sm">
@@ -473,14 +477,14 @@ export default function UniversityPage() {
                 </div>
 
                 {/* Mobile: Card Layout */}
-                <div className="block sm:hidden space-y-3">
+                <div className="block sm:hidden space-y-2">
                   {universityData.feeStructure.map((item) => (
                     <motion.div
                       key={item._id}
                       className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3"
                       whileHover={{ scale: 1.02 }}
                     >
-                      <div className="flex justify-between items-center mb-2">
+                      <div className="flex justify-between items-center mb-1">
                         <h4 className="font-medium text-sm">
                           Year {item.year}
                         </h4>
@@ -488,7 +492,7 @@ export default function UniversityPage() {
                           ${item.tuition + item.hostel}
                         </span>
                       </div>
-                      <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                      <div className="grid grid-cols-2 gap-1 text-xs text-muted-foreground">
                         <div>Tuition: ${item.tuition}</div>
                         <div>Hostel: ${item.hostel}</div>
                       </div>
@@ -498,7 +502,7 @@ export default function UniversityPage() {
 
                 {/* Desktop: Table Layout */}
                 <div className="hidden sm:block">
-                  <table className="w-full text-xs sm:text-sm">
+                  <table className="w-full text-sm">
                     <thead>
                       <tr className="bg-gray-100 dark:bg-gray-800 text-left">
                         <th className="p-2 sm:p-3 font-medium">Year</th>
@@ -543,26 +547,26 @@ export default function UniversityPage() {
 
           {/* Admission Process - Accordion Version */}
           <motion.section variants={fadeIn}>
-            <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
-                <CardTitle className="text-base sm:text-lg lg:text-xl flex items-center gap-2">
+            <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-4 sm:p-6">
+                <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                   <ClipboardList className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A3D3]" />
                   Admission Process
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 sm:p-4 lg:p-6">
+              <CardContent className="p-4 sm:p-6">
                 <Accordion type="multiple" className="w-full">
                   {/* Eligibility Criteria Accordion */}
                   <AccordionItem value="eligibility">
-                    <AccordionTrigger className="hover:no-underline text-sm sm:text-base">
+                    <AccordionTrigger className="hover:no-underline text-sm sm:text-base px-0">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-[#00A3D3]/10 flex items-center justify-center">
-                          <UserCheck className="w-3 h-3 text-[#00A3D3]" />
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#00A3D3]/10 flex items-center justify-center">
+                          <UserCheck className="w-3 h-3 sm:w-4 sm:h-4 text-[#00A3D3]" />
                         </div>
                         Eligibility Criteria
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="px-0 pb-0">
                       <ul className="space-y-2 text-muted-foreground text-sm sm:text-base pl-2 pt-2">
                         {universityData.eligibility.map((point, index) => (
                           <motion.li
@@ -582,16 +586,16 @@ export default function UniversityPage() {
 
                   {/* Steps for Admission Accordion */}
                   <AccordionItem value="steps">
-                    <AccordionTrigger className="hover:no-underline text-sm sm:text-base">
+                    <AccordionTrigger className="hover:no-underline text-sm sm:text-base px-0">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-[#00A3D3]/10 flex items-center justify-center">
-                          <Calendar className="w-3 h-3 text-[#00A3D3]" />
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#00A3D3]/10 flex items-center justify-center">
+                          <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-[#00A3D3]" />
                         </div>
                         Steps for Admission
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent>
-                      <ol className="space-y-3 text-muted-foreground text-sm sm:text-base pl-2 pt-2">
+                    <AccordionContent className="px-0 pb-0">
+                      <ol className="space-y-2 text-muted-foreground text-sm sm:text-base pl-2 pt-2">
                         {universityData.admissionSteps.map((step, index) => (
                           <motion.li
                             key={index}
@@ -610,15 +614,15 @@ export default function UniversityPage() {
 
                   {/* Documents Required Accordion - Badge Version */}
                   <AccordionItem value="documents">
-                    <AccordionTrigger className="hover:no-underline text-sm sm:text-base">
+                    <AccordionTrigger className="hover:no-underline text-sm sm:text-base px-0">
                       <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-[#00A3D3]/10 flex items-center justify-center">
-                          <FileText className="w-3 h-3 text-[#00A3D3]" />
+                        <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#00A3D3]/10 flex items-center justify-center">
+                          <FileText className="w-3 h-3 sm:w-4 sm:h-4 text-[#00A3D3]" />
                         </div>
                         Documents Required
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent>
+                    <AccordionContent className="px-0 pb-0">
                       <div className="flex flex-wrap gap-2 pt-2">
                         {universityData.documents.map((doc, index) => (
                           <motion.div
@@ -626,7 +630,7 @@ export default function UniversityPage() {
                             variants={fadeIn}
                             className="flex items-center gap-1"
                           >
-                            <Badge variant="outline" className="text-sm font-normal">
+                            <Badge variant="outline" className="text-xs sm:text-sm font-normal">
                               <CheckCircle className="w-3 h-3 mr-1 text-green-500" />
                               {doc}
                             </Badge>
@@ -643,22 +647,22 @@ export default function UniversityPage() {
           {/* Reviews */}
           {universityData.reviews.length > 0 && (
             <motion.section variants={fadeIn}>
-              <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
-                  <CardTitle className="text-base sm:text-lg lg:text-xl flex items-center gap-2">
+              <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
+                <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-4 sm:p-6">
+                  <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                     <Users className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A3D3]" />
                     Student Reviews
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-3 sm:p-4 lg:p-6">
-                  <div className="space-y-4 sm:space-y-6">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="space-y-3 sm:space-y-4">
                     {universityData.reviews.map((review) => (
                       <motion.div
                         key={review._id}
-                        className="border dark:border-gray-700 rounded-lg p-3 sm:p-4 lg:p-6"
+                        className="border dark:border-gray-700 rounded-lg p-3 sm:p-4"
                         whileHover={{ scale: 1.01 }}
                       >
-                        <div className="flex items-center gap-3 mb-3 sm:mb-4">
+                        <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
                           <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
                             <AvatarImage
                               src={review.image || "/placeholder.svg"}
@@ -698,14 +702,14 @@ export default function UniversityPage() {
           {/* FAQs */}
           {universityData.faqs.length > 0 && (
             <motion.section variants={fadeIn}>
-              <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
-                  <CardTitle className="text-base sm:text-lg lg:text-xl flex items-center gap-2">
+              <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
+                <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-4 sm:p-6">
+                  <CardTitle className="text-base sm:text-lg flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A3D3]" />
                     Frequently Asked Questions
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-3 sm:p-4 lg:p-6">
+                <CardContent className="p-4 sm:p-6">
                   <Accordion type="single" collapsible>
                     {universityData.faqs.map(({ q, a, _id }, index) => (
                       <AccordionItem
@@ -713,10 +717,10 @@ export default function UniversityPage() {
                         value={`item-${index}`}
                         className="border-b dark:border-gray-800"
                       >
-                        <AccordionTrigger className="hover:no-underline py-3 sm:py-4 text-left text-sm sm:text-base">
+                        <AccordionTrigger className="hover:no-underline py-2 sm:py-3 text-left text-sm sm:text-base px-0">
                           {q}
                         </AccordionTrigger>
-                        <AccordionContent className="pb-3 sm:pb-4 text-muted-foreground text-sm sm:text-base">
+                        <AccordionContent className="pb-2 sm:pb-3 text-muted-foreground text-sm sm:text-base px-0">
                           {a}
                         </AccordionContent>
                       </AccordionItem>
@@ -728,18 +732,18 @@ export default function UniversityPage() {
           )}
         </div>
 
-        {/* Sidebar */}
-        <div className="space-y-4 sm:space-y-6">
+        {/* Right Column - Sidebar */}
+        <div className="lg:w-80 xl:w-96 space-y-4 sm:space-y-6">
           {/* Quick Apply Card */}
-          <motion.div variants={fadeIn} className="lg:top-6">
-            <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
-                <CardTitle className="text-base sm:text-lg lg:text-xl">
+          <motion.div variants={fadeIn} className=" lg:top-4">
+            <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-4 sm:p-6">
+                <CardTitle className="text-base sm:text-lg">
                   Apply Now
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 sm:p-4 lg:p-6">
-                <form className="space-y-3 sm:space-y-4">
+              <CardContent className="p-4 sm:p-6">
+                <form className="space-y-3">
                   <div>
                     <label className="block text-xs sm:text-sm font-medium mb-1">
                       Full Name
@@ -790,15 +794,15 @@ export default function UniversityPage() {
 
           {/* Contact Card */}
           <motion.div variants={fadeIn}>
-            <Card className="border-0 shadow-lg rounded-xl overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-3 sm:p-4 lg:p-6">
-                <CardTitle className="text-base sm:text-lg lg:text-xl">
+            <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-4 sm:p-6">
+                <CardTitle className="text-base sm:text-lg">
                   Need Help?
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-3 sm:p-4 lg:p-6">
-                <div className="space-y-3 sm:space-y-4">
-                  <div className="flex items-center gap-3">
+              <CardContent className="p-4 sm:p-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <div className="bg-[#00A3D3]/10 p-2 rounded-full">
                       <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A3D3]" />
                     </div>
@@ -811,7 +815,7 @@ export default function UniversityPage() {
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <div className="bg-[#00A3D3]/10 p-2 rounded-full">
                       <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A3D3]" />
                     </div>
