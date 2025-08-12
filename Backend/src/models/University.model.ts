@@ -24,16 +24,30 @@ interface FAQ {
   a: string;
 }
 
+interface Photo {
+  url: string;
+  publicId?: string;
+  caption?: string;
+}
+
+interface LocationMaps {
+  latitude?: number;
+  longitude?: number;
+  googleMapEmbedUrl?: string;
+}
+
 export interface IUniversity extends Document {
   name: string;
   university: string;
   country: mongoose.Types.ObjectId;
   location: string;
+  locationmaps?: LocationMaps; // Stores either coordinates or embed link
   tagline: string;
   coverImage: string;
-  coverImagePublicId?: string; // For Cloudinary management
+  coverImagePublicId?: string;
   logo: string;
-  logoPublicId?: string; // For Cloudinary management
+  logoPublicId?: string;
+  photos: Photo[];
   established: number;
   highlights: Highlight[];
   about: string;
@@ -60,67 +74,83 @@ const UniversitySchema = new Schema<IUniversity>(
     name: { type: String, required: true },
     university: { type: String, required: true },
     country: { type: Schema.Types.ObjectId, ref: "Country", required: true },
-    location: String,
-    tagline: String,
-    coverImage: String,
-    coverImagePublicId: String, // For Cloudinary image management
-    logo: String,
-    logoPublicId: String, // For Cloudinary image management
-    established: String,
+    location: { type: String, required: true },
 
+    // You can store coordinates or just embed link
+    locationmaps: {
+      latitude: { type: Number },
+      longitude: { type: Number },
+      googleMapEmbedUrl: { type: String }
+    },
+
+    tagline: { type: String },
+    coverImage: { type: String },
+    coverImagePublicId: { type: String },
+    logo: { type: String },
+    logoPublicId: { type: String },
+
+    photos: [
+      {
+        url: { type: String },
+        publicId: { type: String },
+        caption: { type: String }
+      }
+    ],
+
+    established: { type: Number },
     highlights: [
       {
-        label: String,
-        value: String,
-        icon: String,
-      },
+        label: { type: String },
+        value: { type: String },
+        icon: { type: String }
+      }
     ],
 
-    about: String,
-    programs: [String],
-    duration: String,
-    medium: String,
-    gpaRequired: String,
-    feesUSD: String,
-    feesINR: String,
+    about: { type: String },
+    programs: [{ type: String }],
+    duration: { type: String },
+    medium: { type: String },
+    gpaRequired: { type: String },
+    feesUSD: { type: String },
+    feesINR: { type: String },
+
     feeStructure: [
       {
-        year: Number,
-        tuition: Number,
-        hostel: Number,
-      },
+        year: { type: Number },
+        tuition: { type: Number },
+        hostel: { type: Number }
+      }
     ],
-    hostelCost: String,
-    approvedBy: [String],
-    facilities: [String],
-    eligibility: [String],
-    admissionSteps: [String],
-    documents: [String],
+
+    hostelCost: { type: String },
+    approvedBy: [{ type: String }],
+    facilities: [{ type: String }],
+    eligibility: [{ type: String }],
+    admissionSteps: [{ type: String }],
+    documents: [{ type: String }],
 
     reviews: [
       {
-        name: String,
-        image: String,
-        rating: Number,
-        review: String,
-      },
+        name: { type: String },
+        image: { type: String },
+        rating: { type: Number },
+        review: { type: String }
+      }
     ],
 
     faqs: [
       {
-        q: String,
-        a: String,
-      },
+        q: { type: String },
+        a: { type: String }
+      }
     ],
 
-    comparison: [Schema.Types.Mixed],
+    comparison: [Schema.Types.Mixed]
   },
-  {
-    timestamps: true, // Adds createdAt and updatedAt fields
-  }
+  { timestamps: true }
 );
 
-// Index for better search performance
+// Indexes for search
 UniversitySchema.index({ name: "text", university: "text", location: "text" });
 UniversitySchema.index({ country: 1 });
 UniversitySchema.index({ programs: 1 });

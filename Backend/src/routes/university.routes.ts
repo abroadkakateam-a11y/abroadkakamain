@@ -7,36 +7,42 @@ import {
   deleteUniversity,
   uploadUniversityImages,
 } from "../controllers/university.controller";
-import {
-  validateUniversity,
-  validateQuery,
-  createUniversitySchema,
-  updateUniversitySchema,
-} from "../validators/university.validator";
+
 import { authenticate } from "../middleware/auth.middleware";
+import { upload } from "../middleware/multer";
 
 const router = express.Router();
 
-router.get("/", validateQuery, getUniversities);
+// Get all universities (public access)
+router.get("/", getUniversities);
 
+// Get single university (public access)
 router.get("/:id", getUniversityById);
-
 router.post(
   "/",
-  authenticate(["admin"]), // Only admin can create countries,
-  uploadUniversityImages,
-  validateUniversity(createUniversitySchema),
+  authenticate(["admin"]),
+  upload.fields([
+    { name: "logo", maxCount: 1 },
+    { name: "coverImage", maxCount: 1 },
+    { name: "photos", maxCount: 20 }
+  ]),
+  (req, res, next) => {
+    console.log("Body:", req.body);   // text fields
+    console.log("Files:", req.files); // uploaded files
+    next();
+  },
   createUniversity
 );
 
+// Update university (admin only)
 router.put(
   "/:id",
-  authenticate(),
+  authenticate(["admin"]),
   uploadUniversityImages,
-  validateUniversity(updateUniversitySchema),
   updateUniversity
 );
 
-router.delete("/:id", authenticate(), deleteUniversity);
+// Delete university (admin only)
+router.delete("/:id", authenticate(["admin"]), deleteUniversity);
 
 export default router;
