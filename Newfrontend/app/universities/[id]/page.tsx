@@ -46,6 +46,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { Carousel } from "@/components/carousel";
 
 interface UniversityData {
   _id: string;
@@ -55,6 +56,11 @@ interface UniversityData {
     _id: string;
     name: string;
     code: string;
+  };
+  locationmaps?: {
+    latitude: number;
+    longitude: number;
+    googleMapEmbedUrl: string;
   };
   location: string;
   tagline: string;
@@ -231,17 +237,21 @@ export default function UniversityPage() {
       variants={stagger}
       className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8"
     >
-      {/* Hero Section - Mobile Optimized */}
       <motion.section variants={fadeIn}>
         <div className="relative rounded-lg sm:rounded-xl overflow-hidden mb-4 sm:mb-6 lg:mb-8 h-48 sm:h-64 md:h-80 lg:h-96">
-          <Image
-            src={universityData.coverImage || "/placeholder.svg"}
-            alt="University Cover"
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 1200px"
+          <Carousel
+            images={[
+              { url: universityData.coverImage, alt: 'University Cover' },
+              ...universityData.photos.map(photo => ({
+                url: photo.url,
+                alt: photo.caption || 'University Photo'
+              }))
+            ]}
+            autoPlay={true}
+            delay={5000}
           />
+
+          {/* Gradient overlay and content (same as before) */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4 sm:p-6 md:p-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 sm:gap-4 w-full">
               <motion.div
@@ -364,7 +374,37 @@ export default function UniversityPage() {
               </CardContent>
             </Card>
           </motion.section>
-
+          {/* Location Map Section - Add this after the About section */}
+          {universityData.locationmaps && (
+            <motion.section variants={fadeIn}>
+              <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
+                <CardHeader className="bg-gradient-to-r from-[#00A3D3]/10 to-[#00A3D3]/5 dark:from-[#00A3D3]/20 dark:to-[#00A3D3]/10 p-4 sm:p-6">
+                  <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-[#00A3D3]" />
+                    Location
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="aspect-video w-full">
+                    <iframe
+                      src={universityData.locationmaps.googleMapEmbedUrl}
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      className="rounded-b-lg sm:rounded-b-xl"
+                    ></iframe>
+                  </div>
+                  <div className="p-4 sm:p-6 text-sm text-muted-foreground">
+                    <p>Latitude: {universityData.locationmaps.latitude}</p>
+                    <p>Longitude: {universityData.locationmaps.longitude}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.section>
+          )}
           {/* Program Details */}
           <motion.section variants={fadeIn}>
             <Card className="border-0 shadow-sm sm:shadow-lg rounded-lg sm:rounded-xl overflow-hidden">
